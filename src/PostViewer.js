@@ -31,8 +31,8 @@ const PostViewer = ({ canEdit, onEdit }) => (
         <tbody>
           {data.posts.map(post => (
             <tr key={post.id} style={rowStyles(post, canEdit)} onClick={() => canEdit(post) && onEdit(post)}>
-              <td>{post.author}</td>
-              <td>{post.body}</td>
+              <td data-testid="post-table-author">{post.author}</td>
+              <td data-testid="post-table-body">{post.body}</td>
             </tr>
           ))}
         </tbody>

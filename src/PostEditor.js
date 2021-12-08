@@ -64,7 +64,7 @@ const PostEditor = ({ post, onClose }) => (
             </FormGroup>
           </ModalBody>
           <ModalFooter>
-            <Button type="submit" disabled={pristine} color="primary">Save</Button>
+            <Button type="submit" disabled={pristine} color="primary" data-testid="post-save-button">Save</Button>
             <Button color="secondary" onClick={onClose}>Cancel</Button>
           </ModalFooter>
         </Form>

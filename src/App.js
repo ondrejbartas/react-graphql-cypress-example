@@ -10,6 +10,7 @@ function App() {
   return (
     <Container fluid>
       <Button
+        data-testid="post-new-button"
         className="my-2"
         color="primary"
         onClick={() => setEditing({ })}
