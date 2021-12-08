@@ -20,9 +20,11 @@ import './commands'
 // require('./commands')
 
 
+Cypress.Commands.add('setup', (query = '') => cy.request(`http://127.0.0.1:4000/seed?${query}`))
 Cypress.Commands.add('tid', (selector) => cy.get(`[data-testid="${selector}"]`))
+Cypress.Commands.add('tide', (selector) => cy.get(`[data-testid^="${selector}"]`))
 Cypress.Commands.add('input', (selector) => cy.get(`[name="${selector}"]`))
-Cypress.Commands.add('typeText', { prevSubject: true }, (subject, itemText, { clear, enter, delay = 1, blur } = {}) => {
+Cypress.Commands.add('typeText', { prevSubject: true }, (subject, itemText, { clear, enter, delay = 10, blur } = {}) => {
   if (clear) {
     cy.wrap(subject).clear()
   }
@@ -32,4 +34,29 @@ Cypress.Commands.add('typeText', { prevSubject: true }, (subject, itemText, { cl
   if (blur) {
     cy.wrap(subject).blur()
   }
+})
+
+
+Cypress.Commands.add('assignFile', { prevSubject: true }, (subject, {fixture, contentType}) => {
+  cy.fixture(fixture).as('uploadingFile');
+  // eslint-disable-next-line func-names
+  cy.wrap(subject).then(function(el) {
+    // convert the uploadingFile base64 string to a blob
+    const blob = contentType.startsWith('text') ? new Blob([this.uploadingFile], { type: contentType}) : Cypress.Blob.base64StringToBlob(this.uploadingFile, contentType);
+
+    // eslint-disable-next-line no-undef
+    const file = new File([blob], fixture, {
+      type: contentType,
+    });
+    // eslint-disable-next-line no-undef
+    const list = new DataTransfer();
+
+    list.items.add(file);
+    const myFileList = list.files;
+
+    // eslint-disable-next-line no-param-reassign
+    el[0].files = myFileList;
+    // eslint-disable-next-line no-undef
+    el[0].dispatchEvent(new Event('change', { bubbles: true }));
+  });
 })

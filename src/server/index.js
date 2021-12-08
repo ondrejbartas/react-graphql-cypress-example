@@ -9,6 +9,13 @@ const defaultPosts = [
   { author: "Jane Doe", body: "Hi, planet!" },
 ]
 
+const complexPosts = [
+  { author: "Jeff", body: "Find more layers" },
+  { author: "Elon", body: "Hello SpaceX" },
+  { author: "John Doe", body: "Hello world" },
+  { author: "Jane Doe", body: "Hi, planet!" },
+]
+
 let POSTS = JSON.parse(JSON.stringify(defaultPosts));
 
 const schema = buildASTSchema(gql`
@@ -65,7 +72,11 @@ app.use('/graphql', graphqlHTTP({
 }));
 
 app.get('/seed', (req, res) => {
-  POSTS = JSON.parse(JSON.stringify(defaultPosts))
+  if (req.query.data_type === 'complex') {
+    POSTS = JSON.parse(JSON.stringify(complexPosts))
+  } else {
+    POSTS = JSON.parse(JSON.stringify(defaultPosts))
+  }
   res.send('Seeded!')
 })
 
