@@ -1,24 +1,31 @@
+import React, {useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
+import PostViewer from './PostViewer';
+import PostEditor from './PostEditor';
+import { Button, Container } from 'reactstrap';
 
 function App() {
+  const [editing, setEditing] = useState(null);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container fluid>
+      <Button
+        className="my-2"
+        color="primary"
+        onClick={() => setEditing({ })}
+      >
+        New Post
+      </Button>
+      <PostViewer canEdit={() => true}
+        onEdit={(post) => setEditing(post)}
+      />
+      {editing && (
+        <PostEditor
+          post={editing}
+          onClose={() => setEditing(null)}
+        />
+      )}
+    </Container>
   );
 }
 
