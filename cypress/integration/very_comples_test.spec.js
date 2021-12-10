@@ -9,7 +9,7 @@ import { fillAndSavePost, editPost, checkPost, savePost } from '../page_objects/
 
 export const skipTillStep = 0;
 // setting this true will skip all tests after skipTillStep  (usable for step by step)
-const skipAfterTillStep = false;
+const skipAfterTillStep = true;
 /* ---------------------------- */
 
 let skipAllTestAfterError = false;
@@ -32,7 +32,7 @@ export const testSkipUnlessPreviousRun = (currentStep, name, test) => {
     }
 
     cy.log('Current step number is', currentStep);
-    if (currentStep < skipTillStep || (!!skipAfterTillStep && skipTillStep > 0 && currentStep > skipTillStep)) {
+    if (currentStep < skipTillStep || (!skipAfterTillStep && skipTillStep > 0 && currentStep > skipTillStep)) {
       cy.state('runnable').ctx.skip();
     }
 
